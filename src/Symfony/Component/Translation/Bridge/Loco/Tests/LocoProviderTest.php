@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\Translation\Bridge\Loco\Provider\LocoProvider;
 use Symfony\Component\Translation\Loader\ArrayLoader;
-use Symfony\Component\Translation\Loader\XliffRawLoader;
+use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\MessageCatalogue;
 use Symfony\Component\Translation\TranslatorBag;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -184,7 +184,7 @@ class LocoProviderTest extends TestCase
             'validators' => ['post.num_comments' => '{count, plural, one {# commentaire} other {# commentaires}}'],
         ]));
 
-        $locoProvider = new LocoProvider('API_KEY', new MockHttpClient($responses), new XliffRawLoader(), $this->createMock(LoggerInterface::class), 'en');
+        $locoProvider = new LocoProvider('API_KEY', new MockHttpClient($responses), new XliffFileLoader(), $this->createMock(LoggerInterface::class), 'en');
         $locoProvider->write($translatorBag);
     }
 
@@ -209,7 +209,7 @@ class LocoProviderTest extends TestCase
             return $response;
         });
 
-        $locoProvider = new LocoProvider('API_KEY', $httpClient, new XliffRawLoader(), $this->createMock(LoggerInterface::class), 'en');
+        $locoProvider = new LocoProvider('API_KEY', $httpClient, new XliffFileLoader(), $this->createMock(LoggerInterface::class), 'en');
         $translatorBag = $locoProvider->read([$domain], [$locale]);
 
         $arrayLoader = new ArrayLoader();
@@ -243,7 +243,7 @@ class LocoProviderTest extends TestCase
                 return $response;
             });
 
-            $locoProvider = new LocoProvider('API_KEY', $httpClient, new XliffRawLoader(), $this->createMock(LoggerInterface::class), 'en');
+            $locoProvider = new LocoProvider('API_KEY', $httpClient, new XliffFileLoader(), $this->createMock(LoggerInterface::class), 'en');
             $translatorBag = $locoProvider->read($domains, [$locale]);
 
             $arrayLoader = new ArrayLoader();
